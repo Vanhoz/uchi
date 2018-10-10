@@ -1,0 +1,56 @@
+.field {
+  padding-top: 300px;
+  text-align: center;
+}
+
+.rep-field {
+  width: 90%;
+  height: 30px;
+}
+
+.actions {
+  text-align: center;
+  padding-top: 30px;
+}
+
+.submit {
+  display: inline-block;
+  margin: 10px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  font-size: 50px;
+  color: rgb(0, 132, 255);
+  background-color: #fff;
+}
+
+.submit-show {
+  display: inline-block;
+  margin: auto;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  font-size: 30px;
+  color: rgb(0, 132, 255);
+  background-color: #fff;
+}
+
+.field-show {
+  margin: 0 auto;
+}
+
+.rep-field-show {
+  display: inline-block;
+  margin: auto;
+  width: 40%;
+  height: 30px;
+}
+
+p {
+  display: inline-block;
+}
+
+h2 {
+  display: inline-block;
+  width: 300px;
+}

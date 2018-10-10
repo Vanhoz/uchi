@@ -1,4 +1,5 @@
 class RepositoriesController < ApplicationController
+  require 'zip'
 
   def new
     @repository = Repository.new
@@ -20,12 +21,23 @@ class RepositoriesController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = ContributorPdf.new(params[:contributor_name], params[:contributor_place], params[:contributions],)
+        pdf = ContributorPdf.new(params[:contributor_name], params[:contributor_place], params[:contributions])
   
         send_data pdf.render,
           filename: "repository_#{@repository.id}",
           type: 'application/pdf',
           disposition: 'inline'
+      end
+      format.zip do
+        compressed_filestream = Zip::OutputStream.write_buffer do |zos|
+          @contributors.each do |contributor|
+            pdf = ContributorPdf.new(contributor.name, contributor.place, contributor.quantity)
+            zos.put_next_entry "#{contributor.id}_test.pdf"
+            zos.print pdf.render
+          end
+        end
+        compressed_filestream.rewind
+        send_data compressed_filestream.read, filename: "contributors.zip"
       end
     end
   end

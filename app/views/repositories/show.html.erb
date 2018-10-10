@@ -1,15 +1,17 @@
 <%= form_for Repository.new, url: { action: "create" }, method: :post do |f| %>
-  <div class="field">
-    <%= f.text_field :link, class: 'rep-field' %>
+  <div class="field-show">
+    <%= f.text_field :link, class: 'rep-field-show' %>
+    <%= f.submit "Search", class: 'submit-show' %>
   </div>
-  <div class="actions"><%= f.submit "Найти" %></div>
 <% end %>
 
 <h1>Results<h1>
 <% @contributors.each do |contributor| %>
-  <h2><%= contributor.name %><h2>
+  <h2><%= contributor.name %></h2>
   <p>
     <%= link_to "download pdf", repository_path(@repository, format: 'pdf', contributor_name: contributor.name,
                                                 contributor_place: contributor.place, contributions: contributor.quantity), target: :blank %>
-  </p>
+  </p><br>
 <% end %>
+
+<%= link_to 'Download archive', repository_path(@repository, format: :zip) %>
