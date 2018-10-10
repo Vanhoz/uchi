@@ -17,6 +17,17 @@ class RepositoriesController < ApplicationController
   def show
     @repository = Repository.find(params[:id])
     @contributors = @repository.contributors
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ContributorPdf.new(params[:contributor_name], params[:contributor_place], params[:contributions],)
+  
+        send_data pdf.render,
+          filename: "repository_#{@repository.id}",
+          type: 'application/pdf',
+          disposition: 'inline'
+      end
+    end
   end
 
   private

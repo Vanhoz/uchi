@@ -8,4 +8,8 @@
 <h1>Results<h1>
 <% @contributors.each do |contributor| %>
   <h2><%= contributor.name %><h2>
+  <p>
+    <%= link_to "download pdf", repository_path(@repository, format: 'pdf', contributor_name: contributor.name,
+                                                contributor_place: contributor.place, contributions: contributor.quantity), target: :blank %>
+  </p>
 <% end %>
