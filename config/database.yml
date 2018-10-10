@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
+  adapter: postgresql
   database: uchi_production
   username: uchi
   password: <%= ENV['UCHI_DATABASE_PASSWORD'] %>
