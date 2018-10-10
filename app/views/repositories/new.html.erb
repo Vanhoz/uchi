@@ -1,0 +1,15 @@
+<%= form_for @repository do |f| %>
+  <% if @repository.errors.any? %>
+    <h2>Неверно заполнены поля</h2>
+    <ul>
+      <% @repository.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div class="field">
+    <%= f.text_field :link, class: 'rep-field' %>
+  </div>
+  <div class="actions"><%= f.submit "Найти" %></div>
+<% end %>

@@ -13,3 +13,18 @@
  *= require_tree .
  *= require_self
  */
+
+ .field {
+   padding-top: 300px;
+   text-align: center;
+ }
+
+ .rep-field {
+   width: 1000px;
+   height: 30px;
+ }
+
+ .actions {
+  text-align: center;
+  padding: 20px;
+ }
