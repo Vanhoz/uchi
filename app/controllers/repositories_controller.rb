@@ -1,5 +1,6 @@
 class RepositoriesController < ApplicationController
   require 'zip'
+  # before_action :find_existed, only: %i[create]
 
   def new
     @repository = Repository.new
@@ -8,10 +9,17 @@ class RepositoriesController < ApplicationController
   def create
     @repository = Repository.new(repository_params)
     @repository.create_link(params[:repository][:link])
-    if @repository.save
-      redirect_to repository_path(@repository.id)
+    rep = @repository.create_or_show
+    p '---------------------'
+    p rep
+    if !rep
+      if @repository.save
+        redirect_to repository_path(@repository.id)
+      else
+        redirect_to root_path, flash: {error: @repository.errors.full_messages.join(', ')}
+      end
     else
-      render 'new'
+      redirect_to repository_path(rep)
     end
   end
 
@@ -43,6 +51,12 @@ class RepositoriesController < ApplicationController
   end
 
   private
+
+  # def find_existed
+  #   rep = Repository.update_or_show
+  #   p '//////////////'
+  #   p rep
+  # end
 
   def repository_params
     params.require(:repository).permit(:link)

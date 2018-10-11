@@ -1,9 +1,13 @@
 class Repository < ApplicationRecord
   after_create :create_contributors
-  has_many :contributors
+  # before_create :destroy_if_old
+  has_many :contributors, dependent: :destroy
+
+  validates_presence_of :link, message: 'can\'t be blank.'
+  validates_with LinkValidator
 
   def create_link(link)
-    self.link = "https://api.github.com/repos/#{link.gsub("https://github.com/", "")}/contributors"
+    self.link = "https://api.github.com/repos/#{link.gsub("https://github.com/", "")}/contributors" unless link == ""
   end
 
   def call_api
@@ -16,8 +20,31 @@ class Repository < ApplicationRecord
 
   def create_contributors
     cont_names, cont_quantities = call_api
-    3.times do |i|
+    cont_names.length.times do |i|
       self.contributors.create(name: cont_names[i], quantity: cont_quantities[i], place: i)
     end
   end
+  
+  def create_or_show
+    rep = Repository.find_by(link: self.link)
+    if rep
+      if rep.updated_at < 1.hours.ago
+        rep.destroy!
+        return false
+      else
+        return rep.id
+      end
+    else
+      return false
+    end
+  end
+
+  # def destroy_if_old
+  #   rep = Repository.find_by(link: self.link)
+  #   if rep
+  #     if rep.updated_at < 1.hours.ago
+  #       rep.destroy!
+  #     end
+  #   end
+  # end
 end

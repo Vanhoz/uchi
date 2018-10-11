@@ -1,11 +1,6 @@
 <%= form_for @repository do |f| %>
-  <% if @repository.errors.any? %>
-    <h2>Неверно заполнены поля</h2>
-    <ul>
-      <% @repository.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+  <% if flash[:error] %>
+    <div class="error"><%= flash[:error] %></div>
   <% end %>
 
   <div class="field">
