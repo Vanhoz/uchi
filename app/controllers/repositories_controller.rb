@@ -1,6 +1,5 @@
 class RepositoriesController < ApplicationController
   require 'zip'
-  # before_action :find_existed, only: %i[create]
 
   def new
     @repository = Repository.new
@@ -10,8 +9,6 @@ class RepositoriesController < ApplicationController
     @repository = Repository.new(repository_params)
     @repository.create_link(params[:repository][:link])
     rep = @repository.create_or_show
-    p '---------------------'
-    p rep
     if !rep
       if @repository.save
         redirect_to repository_path(@repository.id)
@@ -40,7 +37,7 @@ class RepositoriesController < ApplicationController
         compressed_filestream = Zip::OutputStream.write_buffer do |zos|
           @contributors.each do |contributor|
             pdf = ContributorPdf.new(contributor.name, contributor.place, contributor.quantity)
-            zos.put_next_entry "#{contributor.id}_test.pdf"
+            zos.put_next_entry "#{contributor.name}_award.pdf"
             zos.print pdf.render
           end
         end
@@ -51,12 +48,6 @@ class RepositoriesController < ApplicationController
   end
 
   private
-
-  # def find_existed
-  #   rep = Repository.update_or_show
-  #   p '//////////////'
-  #   p rep
-  # end
 
   def repository_params
     params.require(:repository).permit(:link)

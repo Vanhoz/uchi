@@ -1,6 +1,5 @@
 class Repository < ApplicationRecord
   after_create :create_contributors
-  # before_create :destroy_if_old
   has_many :contributors, dependent: :destroy
 
   validates_presence_of :link, message: 'can\'t be blank.'
@@ -38,13 +37,4 @@ class Repository < ApplicationRecord
       return false
     end
   end
-
-  # def destroy_if_old
-  #   rep = Repository.find_by(link: self.link)
-  #   if rep
-  #     if rep.updated_at < 1.hours.ago
-  #       rep.destroy!
-  #     end
-  #   end
-  # end
 end
